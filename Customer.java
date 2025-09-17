@@ -5,60 +5,85 @@
 package Project1_6713249;
 
 import java.util.*;
+//import java.lang.Math;
 
-public class Customer {
+public class Customer implements Comparable<Customer>
+{
+    //private ArrayList<Customer> allCustomers = new ArrayList<>();
     private String actualCustomerID;
-    private String bookings;
-    private boolean duplicate = false;
     private double ctotal;
-    public Customer(String id, String booking, boolean dup, double ctotal) {
+    private ArrayList<Booking> bookings;
+    
+    public Customer(String id, ArrayList<Booking> booking, double ctotal) {
         this.actualCustomerID = id;
         this.bookings = booking;
-        this.duplicate = dup;
-        this double ctotal = ctotal;
+        this.ctotal = ctotal;
     }
-
-    public String getId() { return this.id; }
-
-    /** Add a booking belonging to this customer */
-    public void addBooking(Booking b) {
-        if (b != null) this.bookings.add(b);
-    }
-
-    /** Return list (read-only copy) of bookings */
-    public List<Booking> getBookings() {
-        return new ArrayList<>(this.bookings);
-    }
-
-    /** Sum of booking subtotals (before discount) */
-    public double getTotalSubBeforeDiscount() {
-        double sum = 0.0;
-        for (Booking b : bookings) sum += b.getSubTotal();
-        return sum;
-    }
-
-    /** Print a detailed report for this customer (all bookings) */
-    public void printDetailedReport() {
-        System.out.printf("Customer %s : %d booking(s)%n", this.id, this.bookings.size());
-        for (Booking b : bookings) {
-            b.printReport();
+    public String getActualCustomerID(){ return actualCustomerID;}
+    public double getCTotal(){ return ctotal;}
+    public ArrayList<Booking> getBookings(){ return bookings;}
+    public void checkDuplicates(ArrayList<Booking> b)
+    {
+        for(int i = 0; i < b.size(); i++)
+        {
+            Booking tempListI = b.get(i);
+            double totalAmount = tempListI.getSubTotal();
+            for(int j = 1; j < b.size(); j++)
+            {
+                ArrayList<Booking> t = new ArrayList<>();
+                t.add(tempListI);
+                Booking tempListJ = b.get(j);
+                if(tempListI.getCustomerID().equals(tempListJ.getCustomerID()))
+                {
+                    totalAmount += tempListJ.getSubTotal();
+                    t.add(tempListJ);
+                }
+                Customer a = new Customer(tempListI.getCustomerId(), t, totalAmount);
+                this.allCustomers.add(a);
+            }
         }
-        long totalSub = Math.round(getTotalSubBeforeDiscount());
-        System.out.printf("  TOTAL (before discount) = %,d%n%n", totalSub);
     }
-
-    /** Print a short summary line used in sorted summary */
-    public void printSummaryLine() {
-        long totalSub = Math.round(getTotalSubBeforeDiscount());
-        System.out.printf("%-6s  TotalBooking=%,d  Bookings: ", this.id, totalSub);
-        boolean first = true;
-        for (Booking b : bookings) {
-            if (!first) System.out.print(", ");
-            System.out.print(b.getId());
-            first = false;
+    public void removeDuplicates()
+    {
+        for(int i = 0; i < this.allCustomers.size(); i++)
+        {
+            Customer tempI = this.allCustomers.get(i);
+            for(int j = 1; j< this.allCustomers.size(); j++)
+            {
+                Customer tempJ = this.allCustomers.get(j);
+                if(tempI.getActualCustomerID().equals(tempJ.getActualCustomerID()))
+                {
+                    this.allCustomers.remove(j);
+                }
+            }
         }
-        System.out.println();
     }
-
+    public void sortCustomerList(){
+        Collections.sort(this.allCustomers);
+    }
+    public void printCustomerSummary()
+    {
+        System.out.println("===== Customer Summary =====\n");
+        for(int i = 0; i < this.allCustomers.size(); i++)
+        {
+            System.out.printf("%-3s >>  total amount = %-13d", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
+            System.out.println("    bookings = [");
+            for(int j = 0; j < this.allCustomers.get(i).bookings.size(); j++)
+            {
+                System.out.println(this.allCustomers.get(i).bookings.get(j).getId());
+                if(j != this.allCustomers.get(i).bookings.size())
+                {
+                    System.out.println(", ");
+                }
+            }
+            System.out.println("\n");
+        }   
+    }
+    @Override
+    public int compareTo(Customer other){
+        
+        if (this.ctotal != other.ctotal) {return (int)Math.round(other.ctotal - this.ctotal);}
+        return 0;
+    } 
 }
 
