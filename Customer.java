@@ -7,12 +7,15 @@ package Project1_6713249;
 import java.util.*;
 
 public class Customer {
-    private String id;
-    private List<Booking> bookings;
-
-    public Customer(String id) {
-        this.id = id;
-        this.bookings = new ArrayList<>();
+    private String actualCustomerID;
+    private String bookings;
+    private boolean duplicate = false;
+    private double ctotal;
+    public Customer(String id, String booking, boolean dup, double ctotal) {
+        this.actualCustomerID = id;
+        this.bookings = booking;
+        this.duplicate = dup;
+        this double ctotal = ctotal;
     }
 
     public String getId() { return this.id; }
@@ -58,3 +61,4 @@ public class Customer {
     }
 
 }
+
