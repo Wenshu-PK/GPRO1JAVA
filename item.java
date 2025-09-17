@@ -1,6 +1,6 @@
 /*puvit
  */
-package GPRO1JAVA;
+package Project1_6713249;
 
 import java.util.*;
 
