@@ -1,4 +1,4 @@
-package com.mycompany.gpro1java;
+package Project1_6713249;
 
 import java.io.*;
 import java.util.Scanner;
