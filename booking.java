@@ -19,13 +19,14 @@ public class booking {
     int[] priceDish = {100, 450, 600};//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
     int RoomPricePerday;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
     int DishPricePerday;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-    int total;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
+    double total;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
     int finalprice = 0;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
 
-    public void setFinalPrice(int discountpercent) {//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
+    /*public void setFinalPrice(int discountpercent) {//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
         this.finalprice = total - (total * discountpercent / 100);
 
-    }
+    }*/
+    
 
     private int[] parseTriple(String s) {
         String[] in = s.split(":");
@@ -35,6 +36,11 @@ public class booking {
             Integer.parseInt(in[2])
         };
     }
+    
+    public double getSubTotal(){return this.total;}
+    public String getBookingId(){return this.bookingID;}
+    public String getCustomerID(){return this.customerID;}
+    
 
     public booking(String line) {
         String[] parts = line.split(",");
@@ -54,7 +60,7 @@ public class booking {
                 + MealsPerPersonPerDay[1] * priceDish[1]
                 + MealsPerPersonPerDay[2] * priceDish[2];
         //เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-        this.total = RoomPricePerday * day + DishPricePerday * day;
+        this.total = RoomPricePerday * day + DishPricePerday * day * Persons;
     }
 
     public void print_booking() {
