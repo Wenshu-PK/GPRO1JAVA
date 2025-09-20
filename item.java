@@ -76,7 +76,7 @@ class Meal extends item {
     
     @Override
     public String Printitemu(int quantity, int days, int persons) {
-        return String.format("%s, %-16s rate (per person per day)=%.2f",
+        return String.format("%s, %-16s rate (per person per day)=%,.2f",
                 code, name, unitPrice);
     }
     
