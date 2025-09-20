@@ -16,7 +16,26 @@ public class Project1_main {
       String path = "src/main/Java/Project1_6713249/";
         
       String filename = "";
+      
+      //input name -> items.txt ( louis )*********************************************************
+      while (true) {
+        System.out.print("Enter file name: ");
+        String filename_itemu = sc.nextLine().trim();
+        try {
+              String inFilename = path + filename_itemu;
+              mainapp.load_itemu(inFilename);
+              break;
+        } catch (FileNotFoundException e) {
+              System.out.println(e);
+        }
+      }
+
+      for (int i = 0; i < mainapp.framItem.size(); i++) {
+            
+        System.out.println(mainapp.framItem.get(i).Printitemu(1, 1, 1));
+      }      
      
+      //input name -> bookings.txt ( khung )**********************************************************
       while (true) {
         System.out.print("Enter file name: ");
         filename = sc.nextLine().trim();
@@ -34,10 +53,26 @@ public class Project1_main {
          System.out.println("Hello world");
      
      }
- }
-   
-  
+ }//end of method main---------------------------------------------------------------------------------------------------------------
+
+//readfile items.txt ( louis ) 
+ public void load_itemu(String filename) throws FileNotFoundException {
+    try (Scanner scf = new Scanner(new File(filename))) {
+         if (scf.hasNextLine()) scf.nextLine(); // skip header
+         while (scf.hasNextLine()) {
+         String line = scf.nextLine();
+         try {
+               item it = itemuFactory.createFromLine(line);
+               framItem.add(it);
+         } catch (Exception e) {
+               System.out.println("Error: " + e.getMessage());
+           }
+         }
+    }
+ } //end of method load_itemu---------------------------------------------------------------------------------------------------------------
     
+  
+//readfile bookings.txt ( khung )
   public void load_booking(String file_path) throws FileNotFoundException
   {  
       try (Scanner readFile = new Scanner(new File(file_path));) {
@@ -57,8 +92,9 @@ public class Project1_main {
         }
     
 
-    }
-  
+    } //end of method load_booking ---------------------------------------------------------------------------------------------------------------
+
+//About Customers ( Max & Jamesbond ) 
   public void checkDuplicates(ArrayList<booking> b)
     {
         for(int i = 0; i < b.size(); i++)
@@ -79,7 +115,7 @@ public class Project1_main {
                 this.allCustomers.add(a);
             }
         }
-    }
+    }//end of method checkDuplicates---------------------------------------------------------------------------------------------------------------
     public void removeDuplicates()
     {
         for(int i = 0; i < this.allCustomers.size(); i++)
@@ -94,10 +130,12 @@ public class Project1_main {
                 }
             }
         }
-    }
+    } //end of method removeDuplicates ---------------------------------------------------------------------------------------------------------------
+    
     public void sortCustomerList(){
         Collections.sort(this.allCustomers);
-    }
+    }//end of method sortCustomerList ---------------------------------------------------------------------------------------------------------------
+    
     public void printCustomerSummary()
     {
         System.out.println("===== Customer Summary =====\n");
@@ -115,9 +153,9 @@ public class Project1_main {
             }
             System.out.println("\n");
         }   
-    }
+    }//end of method printCustomerSummary---------------------------------------------------------------------------------------------------------------
 
 
 
   
-}
+}// end of class
