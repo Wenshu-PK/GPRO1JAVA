@@ -35,25 +35,48 @@ public class Project1_main {
             
         System.out.println(mainapp.framItem.get(i).Printitemu(1, 1, 1));
       }      
-     
+      //input name -> discounts.txr ( Est )***********************************************************
+       
+        // 1) Create Discount object
+        Discount discount = new Discount();
+
+        // 2) Read discounts from file
+        discount.readDiscounts();
+           
+      
       //input name -> bookings.txt ( khung )**********************************************************
-      while (true) {
-        System.out.print("Enter file name: ");
-        filename = sc.nextLine().trim();
+      boolean loop = true;
+      while (loop) {
+          System.out.print("Enter file name: ");
+          String filename_booking = sc.nextLine().trim();
+          File read_file = new File(path + filename_booking);
         try {
-            String inFilename = path + filename;
-            mainapp.load_booking(inFilename);  
-            break;                   
-        } catch(FileNotFoundException e) {
-            
+            Scanner readFile = new Scanner(read_file);
+
+            String buf = readFile.nextLine();
+            while (readFile.hasNext()) {
+
+                try {
+                    String line = readFile.nextLine();
+                    booking b = booking.loadbooking(line);
+                    mainapp.booking_list.add(b);
+                    loop = false;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage()+" skip");
+                }
+
+            }
+        } catch (Exception e) {
             System.out.println(e);
-        }catch (Exception e){System.out.println(e);}
-      }
-     for(int i=0;i<mainapp.booking_list.size();i++){
-         mainapp.booking_list.get(i).print_booking();
-         System.out.println("Hello world");
+        }
+      }  
+        for (int i = 0; i < mainapp.booking_list.size(); i++) {
+            mainapp.booking_list.get(i).print_booking();
+
+        }
+        
+    
      
-     }
  }//end of method main---------------------------------------------------------------------------------------------------------------
 
 //readfile items.txt ( louis ) 
@@ -70,30 +93,9 @@ public class Project1_main {
            }
          }
     }
- } //end of method load_itemu---------------------------------------------------------------------------------------------------------------
+ }//end of method load_itemu---------------------------------------------------------------------------------------------------------------
     
   
-//readfile bookings.txt ( khung )
-  public void load_booking(String file_path) throws FileNotFoundException
-  {  
-      try (Scanner readFile = new Scanner(new File(file_path));) {
-        
-        
-        String line;
-        readFile.nextLine();
-        while (readFile.hasNext()) 
-        {
-
-            line = readFile.nextLine();
-            booking_list.add(new booking(line));
-
-        }
-        } catch (IOException e) {
-            System.out.println("File error: " + e.getMessage());
-        }
-    
-
-    } //end of method load_booking ---------------------------------------------------------------------------------------------------------------
 
 //About Customers ( Max & Jamesbond ) 
   public void checkDuplicates(ArrayList<booking> b)
