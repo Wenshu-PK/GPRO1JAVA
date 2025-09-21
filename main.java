@@ -7,6 +7,7 @@ public class Project1_main {
     
   protected ArrayList<booking> booking_list = new ArrayList<>();
   protected ArrayList<Customer> allCustomers = new ArrayList<>();
+  protected ArrayList<item> framItem = new ArrayList<>();
   
   public static void main(String[] args) {
       
