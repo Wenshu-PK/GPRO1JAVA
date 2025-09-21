@@ -17,8 +17,10 @@ public class booking {
     private int[] MealsPerPersonPerDay;//index 1 for M1,index 2 forM2,index 3 for M3
     private int RoomPricePerday;
     private int DishPricePerday;
-    private int total;
+    private double total;
     private int finalprice = 0;
+    private double roomTotal;
+    private double mealTotal;
 
     private static int[] parseTriple(String s) throws InvalidNumberException{
         String[] in = s.split(":");
@@ -120,12 +122,39 @@ public class booking {
         this.MealsPerPersonPerDay = MealsPerPersonPerDays;
 
     }
+    
+      public void computePrice(List<item> framItem) {
+        double sumRoom = 0.0;
+        double sumMeal = 0.0;
+
+        
+        // index 0–2 = Room, index 3–5 = Meal
+        for (int i = 0; i < RoomsPerDay.length; i++) {
+            if (RoomsPerDay[i] > 0) {
+                item it = framItem.get(i);
+                sumRoom += it.computePrice(RoomsPerDay[i], day, 1); 
+            }
+        }
+
+        for (int i = 0; i < MealsPerPersonPerDay.length; i++) {
+            if (MealsPerPersonPerDay[i] > 0) {
+                item it = framItem.get(RoomsPerDay.length + i);
+                sumMeal += it.computePrice(MealsPerPersonPerDay[i], day, Persons);
+            }
+        }
+
+        this.roomTotal = sumRoom;
+        this.mealTotal = sumMeal;
+        this.total = sumRoom + sumMeal;
+    }
 
     public void print_booking() {
 
         System.out.printf("Booking %5S, customer %5S  >>  days = %3d, persons = %4d,  rooms=[%d,%d,%d],  meals = [%d,%d,%d] \n",
                 bookingID, customerID, day, Persons, RoomsPerDay[0], RoomsPerDay[1],
                 RoomsPerDay[2], MealsPerPersonPerDay[0], MealsPerPersonPerDay[1], MealsPerPersonPerDay[2]);
+         System.out.printf("Room total = %,.2f\n Meal total = %,.2f\n Subtotal = %,.2f\n",
+                roomTotal, mealTotal, total);
 
     }
 
