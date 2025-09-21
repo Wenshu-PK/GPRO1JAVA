@@ -71,14 +71,27 @@ public class Project1_main {
         }
       }  
         for (int i = 0; i < mainapp.booking_list.size(); i++) {
-            mainapp.booking_list.get(i).print_booking();
-
+            booking b = mainapp.booking_list.get(i);
+            b.computePrice(mainapp.framItem);
+            b.print_booking();
         }
+      //  ( Max&Jamesbond )******************************************************************************
+      mainapp.checkDuplicates(mainapp.booking_list);
+      mainapp.removeDuplicates();
+      mainapp.sortCustomerList();
+      mainapp.printCustomerSummary();
         
     
      
  }//end of method main---------------------------------------------------------------------------------------------------------------
 
+  /*public void calculate(){
+   double roomprice;
+   for(int i=0;i< this.booking_list.get(i).RoomsPerDay.length; i++){
+    
+   }
+  }// end of method calculate*/
+  
 //readfile items.txt ( louis ) 
  public void load_itemu(String filename) throws FileNotFoundException {
     try (Scanner scf = new Scanner(new File(filename))) {
@@ -101,12 +114,12 @@ public class Project1_main {
   public void checkDuplicates(ArrayList<booking> b)
     {
         for(int i = 0; i < b.size(); i++)
-        {
+        {   ArrayList<booking> t = new ArrayList<>();
             booking tempListI = b.get(i);
             double totalAmount = tempListI.getSubTotal();
-            for(int j = 1; j < b.size(); j++)
+            for(int j = i+1; j < b.size(); j++)
             {
-                ArrayList<booking> t = new ArrayList<>();
+                
                 t.add(tempListI);
                 booking tempListJ = b.get(j);
                 if(tempListI.getCustomerID().equals(tempListJ.getCustomerID()))
@@ -114,9 +127,10 @@ public class Project1_main {
                     totalAmount += tempListJ.getSubTotal();
                     t.add(tempListJ);
                 }
-                Customer a = new Customer(tempListI.getCustomerID(), t, totalAmount);
-                this.allCustomers.add(a);
+                
             }
+            Customer a = new Customer(tempListI.getCustomerID(), t, totalAmount);
+            this.allCustomers.add(a);
         }
     }//end of method checkDuplicates---------------------------------------------------------------------------------------------------------------
     public void removeDuplicates()
@@ -124,7 +138,7 @@ public class Project1_main {
         for(int i = 0; i < this.allCustomers.size(); i++)
         {
             Customer tempI = this.allCustomers.get(i);
-            for(int j = 1; j< this.allCustomers.size(); j++)
+            for(int j = i+1; j< this.allCustomers.size(); j++)
             {
                 Customer tempJ = this.allCustomers.get(j);
                 if(tempI.getActualCustomerID().equals(tempJ.getActualCustomerID()))
@@ -144,7 +158,7 @@ public class Project1_main {
         System.out.println("===== Customer Summary =====\n");
         for(int i = 0; i < this.allCustomers.size(); i++)
         {
-            System.out.printf("%-3s >>  total amount = %-13d", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
+            System.out.printf("%-3s >>  total amount = %-13f", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
             System.out.println("    bookings = [");
             for(int j = 0; j < this.allCustomers.get(i).bookings.size(); j++)
             {
