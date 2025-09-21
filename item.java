@@ -33,13 +33,7 @@ public abstract class item {
         }
     }
 
-    public String Printitemu(int quantity, int days) {
-        return Printitemu(quantity, days, 1);
-    }
-
-    public double computePrice(int quantity, int days) {
-        return computePrice(quantity, days, 1);
-    }
+    
 
     public abstract String Printitemu(int quantity, int days, int persons);
     public abstract double computePrice(int quantity, int days, int persons);
