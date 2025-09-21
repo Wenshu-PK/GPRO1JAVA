@@ -1,81 +1,83 @@
 package Project1_6713249;
 
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class Discount {
-    private ArrayList<Double> pThresh = new ArrayList<>();
-    private ArrayList<Double> disPer = new ArrayList<>();
+    private ArrayList<Double> priceThresholds = new ArrayList<>();
+    private ArrayList<Double> discountPercents = new ArrayList<>();
 
-    // Read discounts from file
     public void readDiscounts() {
         String path = "src/main/java/Project1_6713249/";
         String inFilename = path + "discount.txt";
 
-        try {
-            File inFile = new File(inFilename);
-            Scanner disScan = new Scanner(inFile);
+        File inFile = new File(inFilename);
+        if (!inFile.exists()) {
+            // Handle missing file
+            System.err.println("File not found: " + inFilename);
+            return; // Exit gracefully
+        }
 
-            if (disScan.hasNextLine()) disScan.nextLine(); // skip header
+        try (Scanner disScan = new Scanner(inFile)) {
+            // Skip header line
+            if (disScan.hasNextLine()) disScan.nextLine();
 
+            int lineNum = 1; // track line numbers (excluding header)
             while (disScan.hasNextLine()) {
                 String line = disScan.nextLine().trim();
-                if (line.isEmpty()) continue;
+                lineNum++;
+
+                if (line.isEmpty()) continue; // skip blank lines
 
                 String[] parts = line.split(",");
-                if (parts.length < 2) continue;
+                if (parts.length < 2) {
+                    System.err.println("Invalid format at line " + lineNum + ": " + line);
+                    continue; // skip malformed line
+                }
 
                 try {
                     double threshold = Double.parseDouble(parts[0].trim());
                     double percent = Double.parseDouble(parts[1].trim());
-                    pThresh.add(threshold);
-                    disPer.add(percent);
+
+                    if (threshold < 0 || percent < 0) {
+                        throw new IllegalArgumentException("Negative values not allowed");
+                    }
+
+                    priceThresholds.add(threshold);
+                    discountPercents.add(percent);
+
                 } catch (NumberFormatException e) {
-                    // Skip invalid lines
+                    System.err.println("Number format error at line " + lineNum + ": " + line);
+                    // skip invalid numeric values
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Invalid value at line " + lineNum + ": " + line);
+                    // skip invalid/negative values
                 }
             }
-            disScan.close();
-
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found: " + inFilename);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + inFilename);
         }
     }
 
-    public ArrayList<Double> getPriceThresholds() {
-        return pThresh;
-    }
-
-    public ArrayList<Double> getDiscountPercents() {
-        return disPer;
-    }
-
-    // Calculate final price
+    // Apply the discount based on thresholds
     public double calculateFinalPrice(double subtotal) {
-        double discountToApply = 0.0;
+        double discountPercent = 0.0;
 
-        for (int i = 0; i < pThresh.size(); i++) {
-            if (subtotal >= pThresh.get(i)) {
-                discountToApply = disPer.get(i);
+        for (int i = 0; i < priceThresholds.size(); i++) {
+            if (subtotal >= priceThresholds.get(i)) {
+                discountPercent = discountPercents.get(i);
             }
         }
 
-        double discountAmount = subtotal * (discountToApply / 100.0);
+        double discountAmount = subtotal * discountPercent / 100.0;
         return subtotal - discountAmount;
     }
 
-    // Calculate discount amount only
-    public double getDiscountAmount(double subtotal) {
-        double discountToApply = 0.0;
+    public ArrayList<Double> getPriceThresholds() {
+        return priceThresholds;
+    }
 
-        for (int i = 0; i < pThresh.size(); i++) {
-            if (subtotal >= pThresh.get(i)) {
-                discountToApply = disPer.get(i);
-            }
-        }
-
-        return subtotal * (discountToApply / 100.0);
+    public ArrayList<Double> getDiscountPercents() {
+        return discountPercents;
     }
 }
