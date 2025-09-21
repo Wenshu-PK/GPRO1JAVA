@@ -75,7 +75,7 @@ public class Project1_main {
             b.computePrice(mainapp.framItem);
             b.print_booking();
         }
-      //  ( Max&Jamesbond )******************************************************************************
+      //  ( Max&Jamesbond )*******************************************************************************
       mainapp.checkDuplicates(mainapp.booking_list);
       mainapp.removeDuplicates();
       mainapp.sortCustomerList();
