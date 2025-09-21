@@ -1,4 +1,4 @@
-package gpro1java;
+package Project1_6713249;
 
 import java.io.*;
 import java.util.*;
@@ -111,7 +111,7 @@ public class booking {
         this.RoomsPerDay = RoomPerDays;
         this.Persons = PerSons;
         this.MealsPerPersonPerDay = MealsPerPersonPerDays;
-       
+        
     }
 
     public void print_booking() {
