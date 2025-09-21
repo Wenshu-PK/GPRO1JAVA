@@ -15,8 +15,6 @@ public class booking {
     private int[] RoomsPerDay;
     private int Persons;
     private int[] MealsPerPersonPerDay;
-    private int[] priceRoom = {8000, 11000, 18000};// 
-    private int[] priceDish = {100, 450, 600};//
     private int RoomPricePerday;
     private int DishPricePerday;
     private int total;
@@ -38,12 +36,13 @@ public class booking {
         }
 
     }
+    
 
     public void setFinalPrice(int discountpercent) {
         this.finalprice = total - (total * discountpercent / 100);
 
     }
-
+  
     public static booking loadbooking(String line) throws InvalidNumberException, NumberFormatException {
 
         String[] parts = line.split(",");
@@ -52,12 +51,12 @@ public class booking {
         String bookID = parts[0].trim();
         String cusID = parts[1].trim();
         int days;
-        if (Integer.parseInt(parts[2].trim()) < 1) {
-            throw new InvalidNumberException("InvalidNumberException For day : " + parts[2].trim() + "\n" + line);
-        }try {
+        try {
             days = Integer.parseInt(parts[2].trim());
         } catch (NumberFormatException e) {
             throw new NumberFormatException("NumberFormatException For day : " + parts[2].trim() + "\n" + line);
+        }if (Integer.parseInt(parts[2].trim()) < 1) {
+            throw new InvalidNumberException("InvalidNumberException For day : " + parts[2].trim() + "\n" + line);
         }
        
         days = Integer.parseInt(parts[2].trim());
@@ -73,12 +72,13 @@ public class booking {
         
         RoomsDay = parseTriple(parts[3].trim());
         int Person;
-        if (Integer.parseInt(parts[4].trim()) < 1) {
-            throw new InvalidNumberException("InvalidNumberException For Person : " + parts[4].trim() + "\n" + line);
-        }try {
+        try {
             Person = Integer.parseInt(parts[4].trim());
         } catch (NumberFormatException e) {
             throw new NumberFormatException("NumberFormatException For Person : " + parts[4].trim() + "\n" + line);
+        }
+        if (Integer.parseInt(parts[4].trim()) < 1) {
+            throw new InvalidNumberException("InvalidNumberException For Person : " + parts[4].trim() + "\n" + line);
         }
         
         Person = Integer.parseInt(parts[4].trim());
@@ -111,14 +111,7 @@ public class booking {
         this.RoomsPerDay = RoomPerDays;
         this.Persons = PerSons;
         this.MealsPerPersonPerDay = MealsPerPersonPerDays;
-        this.RoomPricePerday = RoomsPerDay[0] * priceRoom[0]
-                + RoomsPerDay[1] * priceRoom[1]
-                + RoomsPerDay[2] * priceRoom[2];
-
-        this.DishPricePerday = MealsPerPersonPerDay[0] * priceDish[0]
-                + MealsPerPersonPerDay[1] * priceDish[1]
-                + MealsPerPersonPerDay[2] * priceDish[2];
-        this.total = RoomPricePerday * day + DishPricePerday * day;
+       
     }
 
     public void print_booking() {
@@ -128,5 +121,9 @@ public class booking {
                 RoomsPerDay[2], MealsPerPersonPerDay[0], MealsPerPersonPerDay[1], MealsPerPersonPerDay[2]);
 
     }
+    
+    public double getSubTotal(){return this.total;}
+    public String getBookingId(){return this.bookingID;}
+    public String getCustomerID(){return this.customerID;}
 
 }
