@@ -23,7 +23,7 @@ public class Discount {
             } else if (!inFile.canRead()) {
                 System.out.println("Error: Cannot read file. Try again.");
             } else {
-                break; // valid file → exit loop
+                break; // valid file
             }
         }
 
@@ -61,21 +61,33 @@ public class Discount {
                     System.err.println("Invalid value at line " + lineNum + ": " + line);
                 }
             }
+
+            // ✅ Print out discount rules (like in screenshot)
+            System.out.println("Read from " + inFile.getPath());
+            for (int i = 0; i < priceThresholds.size(); i++) {
+                System.out.printf("If total bill >= %,10.2f, discount = %.1f%%%n",
+                        priceThresholds.get(i), discountPercents.get(i));
+            }
+
         } catch (IOException e) {
             System.err.println("Error reading file: " + inFile.getName());
         }
     }
 
-    // Apply the discount based on thresholds
-    public double calculateFinalPrice(double subtotal) {
+    // ✅ Get discount percent only (for Booking to use)
+    public double getDiscountPercent(double subtotal) {
         double discountPercent = 0.0;
-
         for (int i = 0; i < priceThresholds.size(); i++) {
             if (subtotal >= priceThresholds.get(i)) {
                 discountPercent = discountPercents.get(i);
             }
         }
+        return discountPercent;
+    }
 
+    // ✅ Calculate final price (can be used directly if needed)
+    public double calculateFinalPrice(double subtotal) {
+        double discountPercent = getDiscountPercent(subtotal);
         double discountAmount = subtotal * discountPercent / 100.0;
         return subtotal - discountAmount;
     }
