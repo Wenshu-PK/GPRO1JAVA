@@ -1,7 +1,7 @@
-package Project1_6713249;
+package gpro1java;
 
 import java.io.*;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  *
@@ -9,26 +9,20 @@ import java.util.Scanner;
  */
 public class booking {
 
-    String bookingID;
-    String customerID;
-    int day;
-    int[] RoomsPerDay;
-    int Persons;
-    int[] MealsPerPersonPerDay;
-    int[] priceRoom = {8000, 11000, 18000};//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-    int[] priceDish = {100, 450, 600};//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-    int RoomPricePerday;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-    int DishPricePerday;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-    double total;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-    int finalprice = 0;//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
+    private String bookingID;
+    private String customerID;
+    private int day;
+    private int[] RoomsPerDay;
+    private int Persons;
+    private int[] MealsPerPersonPerDay;
+    private int[] priceRoom = {8000, 11000, 18000};// 
+    private int[] priceDish = {100, 450, 600};//
+    private int RoomPricePerday;
+    private int DishPricePerday;
+    private int total;
+    private int finalprice = 0;
 
-    /*public void setFinalPrice(int discountpercent) {//เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-        this.finalprice = total - (total * discountpercent / 100);
-
-    }*/
-    
-
-    private int[] parseTriple(String s) {
+    private static int[] parseTriple(String s) {
         String[] in = s.split(":");
         return new int[]{
             Integer.parseInt(in[0]),
@@ -36,41 +30,103 @@ public class booking {
             Integer.parseInt(in[2])
         };
     }
-    
-    public double getSubTotal(){return this.total;}
-    public String getBookingId(){return this.bookingID;}
-    public String getCustomerID(){return this.customerID;}
-    
 
-    public booking(String line) {
+    public static class InvalidNumberException extends Exception {
+
+        public InvalidNumberException(String message) {
+            super(message);
+        }
+
+    }
+
+    public void setFinalPrice(int discountpercent) {
+        this.finalprice = total - (total * discountpercent / 100);
+
+    }
+
+    public static booking loadbooking(String line) throws InvalidNumberException, NumberFormatException {
+
         String[] parts = line.split(",");
-        this.bookingID = parts[0];
-        this.customerID = parts[1];
-        this.day = Integer.parseInt(parts[2]);
+       
 
-        this.RoomsPerDay = parseTriple(parts[3]);
-        this.Persons = Integer.parseInt(parts[4]);
-        this.MealsPerPersonPerDay = parseTriple(parts[5]);
-        //เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
+        String bookID = parts[0].trim();
+        String cusID = parts[1].trim();
+        int days;
+        if (Integer.parseInt(parts[2].trim()) < 1) {
+            throw new InvalidNumberException("InvalidNumberException For day : " + parts[2].trim() + "\n" + line);
+        }try {
+            days = Integer.parseInt(parts[2].trim());
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("NumberFormatException For day : " + parts[2].trim() + "\n" + line);
+        }
+       
+        days = Integer.parseInt(parts[2].trim());
+
+        int[] RoomsDay;
+        if (parseTriple(parts[3].trim()).length != 3) {
+            throw new InvalidNumberException("InvalidNumberException For room :" + parts[3].trim() + "\n" + line);
+        }try {
+            RoomsDay = parseTriple(parts[3].trim());
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("NumberFormatException For room :" + parts[3].trim() + "\n" + line);
+        }
+        
+        RoomsDay = parseTriple(parts[3].trim());
+        int Person;
+        if (Integer.parseInt(parts[4].trim()) < 1) {
+            throw new InvalidNumberException("InvalidNumberException For Person : " + parts[4].trim() + "\n" + line);
+        }try {
+            Person = Integer.parseInt(parts[4].trim());
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("NumberFormatException For Person : " + parts[4].trim() + "\n" + line);
+        }
+        
+        Person = Integer.parseInt(parts[4].trim());
+
+        int[] MealsDay;
+        if (parseTriple(parts[5].trim()).length != 3) {
+            throw new InvalidNumberException("InvalidNumberException For meal : " + parts[5].trim() + "\n" + line);
+        }
+        try {
+            MealsDay = parseTriple(parts[5].trim());
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("NumberFormatException For meal : " + parts[5].trim() + "\n" + line);
+        }
+        MealsDay = parseTriple(parts[5].trim());
+
+        return new booking(bookID, cusID, days, RoomsDay, Person, MealsDay);
+
+    }
+
+    public booking(String BookingID,
+            String CustomerID,
+            int Day,
+            int[] RoomPerDays,
+            int PerSons,
+            int[] MealsPerPersonPerDays) {
+
+        this.bookingID = BookingID;
+        this.customerID = CustomerID;
+        this.day = Day;
+        this.RoomsPerDay = RoomPerDays;
+        this.Persons = PerSons;
+        this.MealsPerPersonPerDay = MealsPerPersonPerDays;
         this.RoomPricePerday = RoomsPerDay[0] * priceRoom[0]
                 + RoomsPerDay[1] * priceRoom[1]
                 + RoomsPerDay[2] * priceRoom[2];
-        //เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
+
         this.DishPricePerday = MealsPerPersonPerDay[0] * priceDish[0]
                 + MealsPerPersonPerDay[1] * priceDish[1]
                 + MealsPerPersonPerDay[2] * priceDish[2];
-        //เผื่อไว้เฉยๆใช้จากคลาสที่มีก่ารคำนวณเลย
-        this.total = RoomPricePerday * day + DishPricePerday * day * Persons;
+        this.total = RoomPricePerday * day + DishPricePerday * day;
     }
 
     public void print_booking() {
 
-        System.out.printf("Booking %S, customer %S  >>  days = %d, persons = %d,  rooms=[%d,%d,%d],  meals = [%d,%d,%d] \n",
+        System.out.printf("Booking %5S, customer %5S  >>  days = %3d, persons = %4d,  rooms=[%d,%d,%d],  meals = [%d,%d,%d] \n",
                 bookingID, customerID, day, Persons, RoomsPerDay[0], RoomsPerDay[1],
                 RoomsPerDay[2], MealsPerPersonPerDay[0], MealsPerPersonPerDay[1], MealsPerPersonPerDay[2]);
 
     }
-
-  
 
 }
