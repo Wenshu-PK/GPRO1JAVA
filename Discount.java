@@ -8,14 +8,23 @@ public class Discount {
     private ArrayList<Double> discountPercents = new ArrayList<>();
 
     public void readDiscounts() {
-        String path = "src/main/java/Project1_6713249/";
-        String inFilename = path + "discount.txt";
+        String basePath = "src/main/java/Project1_6713249/";
+        Scanner input = new Scanner(System.in);
+        File inFile = null;
 
-        File inFile = new File(inFilename);
-        if (!inFile.exists()) {
-            // Handle missing file
-            System.err.println("File not found: " + inFilename);
-            return; // Exit gracefully
+        // Ask until valid file is found
+        while (true) {
+            System.out.print("Enter discount file name : ");
+            String fileName = input.nextLine().trim();
+            inFile = new File(basePath + fileName);
+
+            if (!inFile.exists()) {
+                System.out.println("Error: File not found. Try again.");
+            } else if (!inFile.canRead()) {
+                System.out.println("Error: Cannot read file. Try again.");
+            } else {
+                break; // valid file → exit loop
+            }
         }
 
         try (Scanner disScan = new Scanner(inFile)) {
@@ -48,14 +57,12 @@ public class Discount {
 
                 } catch (NumberFormatException e) {
                     System.err.println("Number format error at line " + lineNum + ": " + line);
-                    // skip invalid numeric values
                 } catch (IllegalArgumentException e) {
                     System.err.println("Invalid value at line " + lineNum + ": " + line);
-                    // skip invalid/negative values
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading file: " + inFilename);
+            System.err.println("Error reading file: " + inFile.getName());
         }
     }
 
