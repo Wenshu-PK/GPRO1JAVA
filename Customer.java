@@ -3,6 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Project1_6713249;
+/*
+Anun Luechaphongthip         6713253
+Puvit Kitiwongpaisan         6713246
+Kanapod Lamthong             6713220
+Piyawat Jaroonchaikhanakit   6713240
+Sawana Thiputhai             6713249
+*/
 
 import java.util.*;
 //import java.lang.Math;
@@ -30,4 +37,3 @@ public class Customer implements Comparable<Customer>
         return 0;
     } 
 }
-
