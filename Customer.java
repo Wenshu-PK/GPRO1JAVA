@@ -17,9 +17,9 @@ import java.util.*;
 public class Customer implements Comparable<Customer>
 {
     //private ArrayList<Customer> allCustomers = new ArrayList<>();
-    protected String actualCustomerID;
-    protected double ctotal;
-    protected ArrayList<booking> bookings;
+    private String actualCustomerID;
+    private double ctotal;
+    private ArrayList<booking> bookings;
     
     public Customer(String id, ArrayList<booking> booking, double ctotal) {
         this.actualCustomerID = id;
@@ -37,3 +37,4 @@ public class Customer implements Comparable<Customer>
         return 0;
     } 
 }
+
