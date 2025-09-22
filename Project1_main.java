@@ -1,4 +1,11 @@
 package Project1_6713249;
+/*
+Anun Luechaphongthip         6713253
+Puvit Kitiwongpaisan         6713246
+Kanapod Lamthong             6713220
+Piyawat Jaroonchaikhanakit   6713240
+Sawana Thiputhai             6713249
+*/
 
 import java.util.*;
 import java.io.*;
@@ -8,6 +15,8 @@ public class Project1_main {
   protected ArrayList<booking> booking_list = new ArrayList<>();
   protected ArrayList<Customer> allCustomers = new ArrayList<>();
   protected ArrayList<item> framItem = new ArrayList<>();
+  
+  protected Discount discount = new Discount();
   
   public static void main(String[] args) {
       
@@ -36,15 +45,17 @@ public class Project1_main {
         System.out.println(mainapp.framItem.get(i).Printitemu(1, 1, 1));
       }      
       //input name -> discounts.txr ( Est )***********************************************************
-       
-        // 1) Create Discount object
-       
-
-        // 2) Read discounts from file
-       System.out.print("Enter discount filename: ");
-       String filename_discount = sc.nextLine().trim();
-       Discount discount = new Discount();
-       discount.readDiscounts(path + filename_discount);
+       while (true) {
+        System.out.print("Enter discount file name: ");
+        String filename_discount = sc.nextLine().trim();
+        try {
+              String inFilename = path + filename_discount;
+              mainapp.discount.readDiscounts(inFilename);
+              break;
+        } catch (InvalidDiscountException e) {
+              System.out.println(e);
+        }
+      }
       
       //input name -> bookings.txt ( khung )**********************************************************
       boolean loop = true;
@@ -77,7 +88,7 @@ public class Project1_main {
             booking b = mainapp.booking_list.get(i);
             b.computePrice(mainapp.framItem);
             b.print_booking();
-           b.ComputeDiscount(discount);
+           b.ComputeDiscount(mainapp.discount);
         }
       //  ( Max&Jamesbond )*******************************************************************************
       mainapp.checkDuplicates(mainapp.booking_list);
@@ -173,8 +184,4 @@ public class Project1_main {
             System.out.println("");
         }   
     }//end of method printCustomerSummary---------------------------------------------------------------------------------------------------------------
-
-
-
-  
-}// end of class
+}//end
