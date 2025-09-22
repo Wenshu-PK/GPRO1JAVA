@@ -89,12 +89,7 @@ public class Project1_main {
      
  }//end of method main---------------------------------------------------------------------------------------------------------------
 
-  /*public void calculate(){
-   double roomprice;
-   for(int i=0;i< this.booking_list.get(i).RoomsPerDay.length; i++){
-    
-   }
-  }// end of method calculate*/
+  
   
 //readfile items.txt ( louis ) 
  public void load_itemu(String filename) throws FileNotFoundException {
@@ -160,14 +155,14 @@ public class Project1_main {
     
     public void printCustomerSummary()
     {
-        System.out.println("===== Customer Summary =====\n");
+        System.out.println("===== Customer Summary =====");
         for(int i = 0; i < this.allCustomers.size(); i++)
         {
-            System.out.printf("%-3s >>  total amount = %-,13.2f", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
+            System.out.printf("%-3s >>  total amount = %,13.2f", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
             System.out.printf("    bookings = [");
             for(int j = 0; j < this.allCustomers.get(i).bookings.size(); j++)
             {
-                System.out.printf(this.allCustomers.get(i).bookings.get(j).getBookingId());
+                System.out.printf("%-3s",this.allCustomers.get(i).bookings.get(j).getBookingId());
                 if(j < this.allCustomers.get(i).bookings.size()-1)
                 {
                     System.out.printf(", ");
@@ -175,7 +170,7 @@ public class Project1_main {
                 else if(j == this.allCustomers.get(i).bookings.size()-1){System.out.printf("]");}
                 //if(j == this.allCustomers.get(i).bookings.size()-1){ System.out.printf("]");}
             }
-            System.out.println("\n");
+            System.out.println("");
         }   
     }//end of method printCustomerSummary---------------------------------------------------------------------------------------------------------------
 
