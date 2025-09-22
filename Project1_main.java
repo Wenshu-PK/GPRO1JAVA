@@ -169,16 +169,16 @@ public class Project1_main {
         System.out.println("===== Customer Summary =====");
         for(int i = 0; i < this.allCustomers.size(); i++)
         {
-            System.out.printf("%-3s >>  total amount = %,13.2f", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
+            System.out.printf("%-3s >>  total amount = %,13.2f", this.allCustomers.get(i).getActualCustomerID(), this.allCustomers.get(i).getCTotal() );
             System.out.printf("    bookings = [");
-            for(int j = 0; j < this.allCustomers.get(i).bookings.size(); j++)
+            for(int j = 0; j < this.allCustomers.get(i).getBookings().size(); j++)
             {
-                System.out.printf("%-3s",this.allCustomers.get(i).bookings.get(j).getBookingId());
-                if(j < this.allCustomers.get(i).bookings.size()-1)
+                System.out.printf("%-3s",this.allCustomers.get(i).getBookings().get(j).getBookingId());
+                if(j < this.allCustomers.get(i).getBookings().size()-1)
                 {
                     System.out.printf(", ");
                 }
-                else if(j == this.allCustomers.get(i).bookings.size()-1){System.out.printf("]");}
+                else if(j == this.allCustomers.get(i).getBookings().size()-1){System.out.printf("]");}
                 //if(j == this.allCustomers.get(i).bookings.size()-1){ System.out.printf("]");}
             }
             System.out.println("");
