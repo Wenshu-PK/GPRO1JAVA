@@ -10,9 +10,9 @@ Sawana Thiputhai             6713249
 import java.util.*;
 
 public abstract class item {
-    protected String code;
-    protected String name;
-    protected double unitPrice;
+    private String code;
+    private String name;
+    private double unitPrice;
 
     public item(String code, String name, double unitPrice) {
         this.code = code;
@@ -62,12 +62,12 @@ class Meal extends item {
     @Override
     public String Printitemu(int quantity, int days, int persons) {
         return String.format("%s, %-16s rate (per person per day)=%,.2f",
-                code, name, unitPrice);
+                getCode(), getName(), getUnitPrice());
     }
 
     @Override
     public double computePrice(int quantity, int days, int persons) {
-        return unitPrice * quantity * days * persons;
+        return getUnitPrice() * quantity * days * persons;
     }
 }
 
@@ -79,12 +79,12 @@ class Room extends item {
 
     @Override
     public String Printitemu(int quantity, int days, int persons){
-        return String.format("%s, %-20s rate (per day) = %,9.2f", code, name, unitPrice);
+        return String.format("%s, %-20s rate (per day) = %,9.2f", getCode(), getName(), getUnitPrice());
     }
 
     @Override
     public double computePrice(int quantity, int days, int persons) {
-        double base = unitPrice * quantity * days;
+        double base = getUnitPrice() * quantity * days;
         double service = base * 0.10;
         double vat = (base + service) * 0.07;
         return base + service + vat;
