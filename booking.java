@@ -15,8 +15,6 @@ public class booking {
     private int[] RoomsPerDay;//index 1 for R1,index 2 for R2,index 3 for R3
     private int Persons;
     private int[] MealsPerPersonPerDay;//index 1 for M1,index 2 forM2,index 3 for M3
-    private int RoomPricePerday;
-    private int DishPricePerday;
     private double total;
     private double finalprice = 0;
     private double roomTotal;
