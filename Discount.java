@@ -1,4 +1,11 @@
 package Project1_6713249;
+/*
+Anun Luechaphongthip         6713253
+Puvit Kitiwongpaisan         6713246
+Kanapod Lamthong             6713220
+Piyawat Jaroonchaikhanakit   6713240
+Sawana Thiputhai             6713249
+*/
 
 import java.io.*;
 import java.util.*;
@@ -7,7 +14,7 @@ public class Discount {
     protected ArrayList<Double> priceThresholds = new ArrayList<>();
     protected ArrayList<Double> discountPercents = new ArrayList<>();
 
-    public void readDiscounts(String filename) {
+    public void readDiscounts(String filename) throws InvalidDiscountException {
         try (Scanner disScan = new Scanner(new File(filename))) {
             if (disScan.hasNextLine()) disScan.nextLine(); // skip header
 
@@ -29,20 +36,22 @@ public class Discount {
             }
 
             // Print loaded discounts
-            System.out.println("=== Loaded Discounts ===");
+            Collections.sort(this.priceThresholds.reversed() );
+            Collections.sort(this.discountPercents.reversed() );
             for (int i = 0; i < priceThresholds.size(); i++) {
-                System.out.printf("Subtotal >= %,.2f → %.2f%% off\n",
+                System.out.printf("If total Bill >= %,12.2f   discount = %6.2f%% \n",
                         priceThresholds.get(i), discountPercents.get(i));
             }
-            System.out.println("========================");
+            
 
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filename);
+            throw new InvalidDiscountException("InvalidDiscountFile" + e);
         }
     }
 
-    public double getDiscountPercent(double subtotal) {
-        double discountPercent = 0;
+public double getDiscountPercent(double subtotal) {
+    double discountPercent = 0;
         for (int i = 0; i < priceThresholds.size(); i++) {
             if (subtotal >= priceThresholds.get(i)) {
                 discountPercent = discountPercents.get(i);
@@ -50,6 +59,11 @@ public class Discount {
         }
         return discountPercent;
     }
-
    
+}
+//except
+class InvalidDiscountException extends RuntimeException {
+    public InvalidDiscountException(String message) {
+        super(message);
+    }
 }
