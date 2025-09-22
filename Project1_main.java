@@ -38,11 +38,13 @@ public class Project1_main {
       //input name -> discounts.txr ( Est )***********************************************************
        
         // 1) Create Discount object
-        Discount discount = new Discount();
+       
 
         // 2) Read discounts from file
-        discount.readDiscounts();
-           
+       System.out.print("Enter discount filename: ");
+       String filename_discount = sc.nextLine().trim();
+       Discount discount = new Discount();
+       discount.readDiscounts(path + filename_discount);
       
       //input name -> bookings.txt ( khung )**********************************************************
       boolean loop = true;
@@ -70,10 +72,12 @@ public class Project1_main {
             System.out.println(e);
         }
       }  
+     
         for (int i = 0; i < mainapp.booking_list.size(); i++) {
             booking b = mainapp.booking_list.get(i);
             b.computePrice(mainapp.framItem);
             b.print_booking();
+           b.ComputeDiscount(discount);
         }
       //  ( Max&Jamesbond )*******************************************************************************
       mainapp.checkDuplicates(mainapp.booking_list);
