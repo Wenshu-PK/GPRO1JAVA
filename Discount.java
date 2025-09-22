@@ -11,8 +11,8 @@ import java.io.*;
 import java.util.*;
 
 public class Discount {
-    protected ArrayList<Double> priceThresholds = new ArrayList<>();
-    protected ArrayList<Double> discountPercents = new ArrayList<>();
+    private ArrayList<Double> priceThresholds = new ArrayList<>();
+    private ArrayList<Double> discountPercents = new ArrayList<>();
 
     public void readDiscounts(String filename) throws InvalidDiscountException {
         try (Scanner disScan = new Scanner(new File(filename))) {
@@ -52,13 +52,14 @@ public class Discount {
 
 public double getDiscountPercent(double subtotal) {
     double discountPercent = 0;
-        for (int i = 0; i < priceThresholds.size(); i++) {
-            if (subtotal >= priceThresholds.get(i)) {
-                discountPercent = discountPercents.get(i);
-            }
+    for (int i = priceThresholds.size()-1; i >=0 ; i--) {
+        if (subtotal >= priceThresholds.get(i)) {
+            discountPercent = discountPercents.get(i);  // Keep updating to the highest applicable discount
         }
-        return discountPercent;
     }
+    return discountPercent;
+}
+
    
 }
 //except
