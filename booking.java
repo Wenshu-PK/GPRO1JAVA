@@ -157,9 +157,8 @@ public class booking {
   double discountAmount = this.total * discountPercent / 100.0;
   this.finalprice = this.total - discountAmount;
 
-System.out.printf("discount = %.1f%%%n", discountPercent);
-System.out.printf("discount amount = %,10.2f%n", discountAmount);
-System.out.printf("total = %,10.2f%n\n", this.finalprice);
+System.out.printf("             discount   %.1f%%     =     %,10.2f%n", discountPercent, discountAmount);
+System.out.printf("             total               =     %,10.2f%n\n", this.finalprice);
 
   
   
@@ -167,10 +166,10 @@ System.out.printf("total = %,10.2f%n\n", this.finalprice);
   }
     public void print_booking() {
 
-        System.out.printf("Booking %5S, customer %5S  >>  days = %3d, persons = %4d,  rooms=[%d,%d,%d],  meals = [%d,%d,%d] \n",
+        System.out.printf("Booking %3S, customer %5S  >>  days = %3d, persons = %4d,  rooms=[%d,%d,%d],  meals = [%d,%d,%d] \n",
                 bookingID, customerID, day, Persons, RoomsPerDay[0], RoomsPerDay[1],
                 RoomsPerDay[2], MealsPerPersonPerDay[0], MealsPerPersonPerDay[1], MealsPerPersonPerDay[2]);
-         System.out.printf("Room total = %,.2f\nMealtotal = %,.2f\nSubtotal = %,.2f\n",
+         System.out.printf("             total room price++  = %,14.2f\n             total meal price    = %,14.2f\n             Subtotal            = %,14.2f\n",
                 roomTotal, mealTotal, total);
 
     }
