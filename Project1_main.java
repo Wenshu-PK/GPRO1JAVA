@@ -121,10 +121,11 @@ public class Project1_main {
         {   ArrayList<booking> t = new ArrayList<>();
             booking tempListI = b.get(i);
             double totalAmount = tempListI.getSubTotal();
+            t.add(tempListI);
             for(int j = i+1; j < b.size(); j++)
             {
                 
-                t.add(tempListI);
+                //t.add(tempListI);
                 booking tempListJ = b.get(j);
                 if(tempListI.getCustomerID().equals(tempListJ.getCustomerID()))
                 {
@@ -162,15 +163,17 @@ public class Project1_main {
         System.out.println("===== Customer Summary =====\n");
         for(int i = 0; i < this.allCustomers.size(); i++)
         {
-            System.out.printf("%-3s >>  total amount = %-13f", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
-            System.out.println("    bookings = [");
+            System.out.printf("%-3s >>  total amount = %-,13.2f", this.allCustomers.get(i).actualCustomerID, this.allCustomers.get(i).ctotal );
+            System.out.printf("    bookings = [");
             for(int j = 0; j < this.allCustomers.get(i).bookings.size(); j++)
             {
-                System.out.println(this.allCustomers.get(i).bookings.get(j).getBookingId());
-                if(j != this.allCustomers.get(i).bookings.size())
+                System.out.printf(this.allCustomers.get(i).bookings.get(j).getBookingId());
+                if(j < this.allCustomers.get(i).bookings.size()-1)
                 {
-                    System.out.println(", ");
+                    System.out.printf(", ");
                 }
+                else if(j == this.allCustomers.get(i).bookings.size()-1){System.out.printf("]");}
+                //if(j == this.allCustomers.get(i).bookings.size()-1){ System.out.printf("]");}
             }
             System.out.println("\n");
         }   
